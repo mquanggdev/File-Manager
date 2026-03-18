@@ -1,6 +1,8 @@
 import express from 'express';
 import routes from "./routes/index.route";
 const app = express();
+import dotenv from "dotenv";
+dotenv.config();
 const port = 4000;
 
 app.use("/", routes);
