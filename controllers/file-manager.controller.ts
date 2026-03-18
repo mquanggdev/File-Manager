@@ -13,14 +13,20 @@ export const upload = (req: Request, res: Response) => {
       size: number
     }[] = [];
 
-    const mediaDir = path.join(__dirname, "../media");
+    let mediaDir = path.join(__dirname, "../media");
+    
+    // Thêm folderPath
+    const folderPath = req.body.folderPath;
+    if(folderPath != "null") {
+      mediaDir = path.join(mediaDir, folderPath);
+    }
     
     files.forEach(file => {
       const filename = `${Date.now()}-${file.originalname}`;
       const savePath = path.join(mediaDir, filename);
       fs.writeFileSync(savePath, file.buffer);
       saveLinks.push({
-        folder: "/media",
+        folder: "/media" + (folderPath != "null" ? `/${folderPath}` : ""),
         filename: filename,
         mimetype: file.mimetype,
         size: file.size
